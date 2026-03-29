@@ -1,0 +1,9 @@
+{
+  "total_samples": 6778,
+  "idr_mutant_samples": 158,
+  "any_emt_mutant_samples": 761,
+  "mannwhitney_U": 518333.0,
+  "mannwhitney_p": 0.8484074178598445,
+  "idr_mut_median_emp": 488.4700645833327,
+  "idr_wt_median_emp": 885.637922916666
+}
