@@ -71,14 +71,10 @@ conda activate idr_emt
 pip install -r requirements.txt
 ```
 
-## Citation
-
-> Siya (2026). IDR Mutations in EMT Master Regulators as Modulators of
-> Phenotypic Plasticity: A Pan-Cancer TCGA Computational Study. bioRxiv.
 
 ## Author
 
-**Siya** | IISER Tirupati | Pre-IISc Independent Research, April 2026
+**Siya** | IISER Tirupati | April 2026
 
 ## License
 
