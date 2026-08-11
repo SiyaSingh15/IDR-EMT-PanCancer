@@ -4,9 +4,7 @@ import os
 
 DATA_DIR = "data/mafs"
 
-# ---------------------------------------------------------------
-# Step 1: Check all files are present and show sizes
-# ---------------------------------------------------------------
+# Check all files are present and show sizes
 print("=== Downloaded MAF files ===\n")
 files = sorted(os.listdir(DATA_DIR))
 total_size = 0
@@ -17,15 +15,12 @@ for f in files:
     print(f"  {f}: {size:.1f} MB")
 print(f"\nTotal: {total_size:.1f} MB across {len(files)} files")
 
-# ---------------------------------------------------------------
-# Step 2: Peek inside one MAF file (TCGA-BRCA as example)
-# ---------------------------------------------------------------
+# Peek inside one MAF file 
 print("\n=== Peeking inside TCGA-BRCA MAF ===\n")
 
 brca_path = os.path.join(DATA_DIR, "TCGA-BRCA.maf.gz")
 
-# MAF files have comment lines starting with # at the top
-# We skip those and read the actual table
+# MAF files have comment lines starting with # at the top. Skip those and read the actual table
 df = pd.read_csv(brca_path, sep="\t", comment="#",
                  low_memory=False, nrows=5)
 
@@ -36,9 +31,7 @@ for col in df.columns[:10]:
 
 print(f"\nShape of first 5 rows: {df.shape}")
 
-# ---------------------------------------------------------------
-# Step 3: Check our EMT genes are present
-# ---------------------------------------------------------------
+# Check our EMT genes are present
 print("\n=== Checking EMT gene presence in TCGA-BRCA ===\n")
 
 # Read full BRCA MAF
