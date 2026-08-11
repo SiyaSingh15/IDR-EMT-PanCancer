@@ -62,20 +62,11 @@ Save to `data/mafs/mc3.v0.2.8.PUBLIC.maf.gz`
 
 **IDR annotations:** Auto-retrieved via MobiDB REST API (`script 06`)
 
-## Installation
-```bash
-git clone https://github.com/SiyaSingh15/IDR-EMT-PanCancer.git
-cd IDR-EMT-PanCancer
-conda create -n idr_emt python=3.10
-conda activate idr_emt
-pip install -r requirements.txt
-```
+
 
 
 ## Author
 
-**Siya** | IISER Tirupati | April 2026
+**Siya** | IISER Tirupati | May 2026
 
-## License
 
-MIT — see [LICENSE](LICENSE)
