@@ -19,8 +19,8 @@ EMT_PROTEINS = {
     "VIM":    "P08670",
 }
 
-# We use curated-disorder-merge as PRIMARY source (experimentally supported)
-# and prediction-disorder-mobidb_lite as SECONDARY (computational consensus)
+# curated-disorder-merge = PRIMARY source (experimentally supported)
+# prediction-disorder-mobidb_lite = SECONDARY (computational consensus)
 PRIMARY_KEY   = "curated-disorder-merge"
 SECONDARY_KEY = "prediction-disorder-mobidb_lite"
 
@@ -51,9 +51,7 @@ def extract_idrs(data, gene):
 
     return [], "none", protein_length
 
-# ---------------------------------------------------------------
-# Load already-fetched raw data (no need to re-query API)
-# ---------------------------------------------------------------
+# Load already fetched raw data 
 print("Loading MobiDB data from saved JSON...\n")
 
 with open("results/mobidb_raw.json") as f:
@@ -84,9 +82,7 @@ for gene, uid in EMT_PROTEINS.items():
             "source":      source
         })
 
-# ---------------------------------------------------------------
 # Save and summarise
-# ---------------------------------------------------------------
 idr_df = pd.DataFrame(all_rows)
 idr_df.to_csv("results/idr_boundaries.tsv", sep="\t", index=False)
 
