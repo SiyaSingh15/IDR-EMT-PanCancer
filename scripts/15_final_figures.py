@@ -19,9 +19,7 @@ muts    = pd.read_csv("results/emt_mutations_idr_flagged.tsv", sep="\t")
 strat   = pd.read_csv("results/stratified_analysis.tsv", sep="\t")
 genes   = pd.read_csv("results/gene_analysis.tsv",     sep="\t")
 
-# ---------------------------------------------------------------
 # Figure A: IDR coverage lollipop — all 10 genes
-# ---------------------------------------------------------------
 print("Generating Figure A: IDR lollipop plots...")
 
 fig, axes = plt.subplots(5, 2, figsize=(14, 18))
@@ -103,9 +101,7 @@ plt.savefig("figures/figA_lollipop_all_genes.png", dpi=150, bbox_inches="tight")
 plt.close()
 print("Saved: figures/figA_lollipop_all_genes.png")
 
-# ---------------------------------------------------------------
-# Figure B: Stacked summary — IDR vs ordered mutations per gene
-# ---------------------------------------------------------------
+# Figure B: Stacked summary - IDR vs ordered mutations per gene
 print("Generating Figure B: mutation summary...")
 
 gene_summary = []
@@ -151,9 +147,7 @@ plt.savefig("figures/figB_mutation_summary.png", dpi=150)
 plt.close()
 print("Saved: figures/figB_mutation_summary.png")
 
-# ---------------------------------------------------------------
-# Figure C: ESRP1 IDR mutation — Hybrid state depletion
-# ---------------------------------------------------------------
+# Figure C: ESRP1 IDR mutation - Hybrid state depletion
 print("Generating Figure C: ESRP1 hybrid state...")
 
 esrp1_mut = master[master["idr_mut_ESRP1"]==True]
@@ -198,9 +192,7 @@ plt.savefig("figures/figC_esrp1_hybrid_depletion.png", dpi=150)
 plt.close()
 print("Saved: figures/figC_esrp1_hybrid_depletion.png")
 
-# ---------------------------------------------------------------
-# Figure D: Pan-cancer heatmap — IDR mutation frequency
-# ---------------------------------------------------------------
+# Figure D: Pan-cancer heatmap - IDR mutation frequency
 print("Generating Figure D: pan-cancer heatmap...")
 
 # Count IDR mutations per gene per cancer type
@@ -229,9 +221,7 @@ plt.savefig("figures/figD_pancancer_heatmap.png", dpi=150)
 plt.close()
 print("Saved: figures/figD_pancancer_heatmap.png")
 
-# ---------------------------------------------------------------
-# Print final summary stats for paper
-# ---------------------------------------------------------------
+# Print final summary stats 
 print("\n" + "="*60)
 print("FINAL RESULTS SUMMARY FOR MANUSCRIPT")
 print("="*60)
