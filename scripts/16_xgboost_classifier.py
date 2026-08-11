@@ -14,18 +14,14 @@ RESULTS_DIR = "results"
 FIGURES_DIR = "figures"
 os.makedirs(FIGURES_DIR, exist_ok=True)
 
-# ---------------------------------------------------------------
 # Load master dataset
-# ---------------------------------------------------------------
 print("Loading master dataset...")
 df = pd.read_csv("results/master_dataset.tsv", sep="\t")
 print(f"Total samples: {len(df):,}")
 print(f"EMT state distribution:\n{df['emt_state'].value_counts()}\n")
 
-# ---------------------------------------------------------------
 # Build feature matrix
-# ---------------------------------------------------------------
-# IDR mutation features — one binary flag per gene
+# IDR mutation features - one binary flag per gene
 idr_features = [
     "idr_mut_SNAI1","idr_mut_SNAI2","idr_mut_ZEB1","idr_mut_ZEB2",
     "idr_mut_TWIST1","idr_mut_TWIST2","idr_mut_ESRP1","idr_mut_ESRP2",
@@ -54,9 +50,7 @@ print(f"Feature matrix: {X.shape[0]} samples x {X.shape[1]} features")
 print(f"Class distribution: {dict(zip(le.classes_, np.bincount(y_enc)))}")
 print(f"Feature names (first 15): {list(X.columns[:15])}")
 
-# ---------------------------------------------------------------
 # Train XGBoost with 5-fold stratified cross-validation
-# ---------------------------------------------------------------
 print("\nTraining XGBoost classifier (5-fold CV)...")
 
 xgb_clf = xgb.XGBClassifier(
@@ -78,9 +72,7 @@ cv_scores = cross_val_score(xgb_clf, X, y_enc, cv=skf,
 print(f"\n5-fold CV balanced accuracy: {cv_scores.mean():.3f} ± {cv_scores.std():.3f}")
 print(f"Per-fold scores: {[f'{s:.3f}' for s in cv_scores]}")
 
-# ---------------------------------------------------------------
 # Fit on full dataset for SHAP
-# ---------------------------------------------------------------
 print("\nFitting on full dataset for SHAP analysis...")
 xgb_clf.fit(X, y_enc)
 
@@ -89,9 +81,7 @@ y_pred = xgb_clf.predict(X)
 print("\nClassification report (training set):")
 print(classification_report(y_enc, y_pred, target_names=le.classes_))
 
-# ---------------------------------------------------------------
 # SHAP analysis
-# ---------------------------------------------------------------
 print("\nComputing SHAP values...")
 explainer = shap.TreeExplainer(xgb_clf)
 shap_values = explainer.shap_values(X)
@@ -120,9 +110,7 @@ shap_importance = shap_importance.sort_values("mean_all", ascending=False)
 print("\nTop 15 features by mean |SHAP|:")
 print(shap_importance[["Epithelial","Hybrid","Mesenchymal","mean_all"]].head(15).to_string())
 
-# ---------------------------------------------------------------
-# Figure E: SHAP feature importance — IDR features only
-# ---------------------------------------------------------------
+# Figure E: SHAP feature importance - IDR features only
 print("\nGenerating Figure E: SHAP importance for IDR features...")
 
 # Focus on IDR mutation features
@@ -160,15 +148,13 @@ plt.savefig("figures/figE_shap_idr_importance.png", dpi=150)
 plt.close()
 print("Saved: figures/figE_shap_idr_importance.png")
 
-# ---------------------------------------------------------------
-# Figure F: SHAP beeswarm-style plot — top 20 features overall
-# ---------------------------------------------------------------
+# Figure F: SHAP beeswarm-style plot - top 20 features overall
 print("Generating Figure F: SHAP summary plot...")
 
 top20 = shap_importance.head(20).index.tolist()
 X_top20 = X[top20]
 
-# Use class index 2 (Mesenchymal) for beeswarm — most interesting
+# Use class index 2 (Mesenchymal) for beeswarm 
 if isinstance(shap_values, list):
     sv_mesen = shap_values[list(le.classes_).index("Mesenchymal")]
 else:
@@ -191,9 +177,7 @@ plt.savefig("figures/figF_shap_beeswarm.png", dpi=150, bbox_inches="tight")
 plt.close()
 print("Saved: figures/figF_shap_beeswarm.png")
 
-# ---------------------------------------------------------------
 # Figure G: Confusion matrix
-# ---------------------------------------------------------------
 print("Generating Figure G: confusion matrix...")
 
 cm = confusion_matrix(y_enc, y_pred)
@@ -216,9 +200,7 @@ plt.savefig("figures/figG_confusion_matrix.png", dpi=150)
 plt.close()
 print("Saved: figures/figG_confusion_matrix.png")
 
-# ---------------------------------------------------------------
 # Figure H: CV accuracy per fold
-# ---------------------------------------------------------------
 fig, ax = plt.subplots(figsize=(6, 4))
 ax.bar(range(1, 6), cv_scores, color="#2980B9", alpha=0.8, width=0.6)
 ax.axhline(cv_scores.mean(), color="#E74C3C", linestyle="--",
@@ -237,9 +219,7 @@ plt.savefig("figures/figH_cv_performance.png", dpi=150)
 plt.close()
 print("Saved: figures/figH_cv_performance.png")
 
-# ---------------------------------------------------------------
 # Save model results
-# ---------------------------------------------------------------
 results = {
     "cv_balanced_accuracy_mean": float(cv_scores.mean()),
     "cv_balanced_accuracy_std": float(cv_scores.std()),
