@@ -19,7 +19,7 @@ muts    = pd.read_csv("results/emt_mutations_idr_flagged.tsv", sep="\t")
 strat   = pd.read_csv("results/stratified_analysis.tsv", sep="\t")
 genes   = pd.read_csv("results/gene_analysis.tsv",     sep="\t")
 
-# Figure A: IDR coverage lollipop — all 10 genes
+# Figure A: IDR coverage - all 10 genes
 print("Generating Figure A: IDR lollipop plots...")
 
 fig, axes = plt.subplots(5, 2, figsize=(14, 18))
