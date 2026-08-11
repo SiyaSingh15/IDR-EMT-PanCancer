@@ -5,9 +5,7 @@ import time
 DATA_DIR = "data/expression"
 os.makedirs(DATA_DIR, exist_ok=True)
 
-# Direct download URL for TCGA PanCancer Atlas expression matrix
-# Batch-effect corrected, log2(RSEM+1), all ~10,500 TCGA primary tumours
-# Source: UCSC Xena pancanatlas hub
+# Source: UCSC Xena 
 URL = "https://pancanatlas.xenahubs.net/download/EB++AdjustPANCAN_IlluminaHiSeq_RNASeqV2.geneExp.xena.gz"
 OUT = "data/expression/tcga_pancan_expression.gz"
 
