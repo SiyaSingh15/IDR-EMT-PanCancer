@@ -10,16 +10,15 @@ idrs = pd.read_csv("results/idr_boundaries.tsv", sep="\t")
 print(f"Mutations loaded: {len(mutations):,}")
 print(f"IDR regions loaded: {len(idrs)}")
 
-# Fix cancer type — MC3 barcodes are TCGA-XX-XXXX-01
-# Cancer type is encoded in the TCGA project code, not the barcode prefix
-# We need a lookup table mapping patient codes to cancer types
-# MC3 barcode format: TCGA-{tissue_code}-{patient}-{sample}
-# The 2-letter tissue code IS the cancer type identifier
+# Fix cancer type: MC3 barcodes are TCGA-XX-XXXX-01 
+# --> Cancer type is encoded in the TCGA project code, not the barcode prefix 
+# --> We need a lookup table mapping patient codes to cancer types
+# --> MC3 barcode format: TCGA-{2char_tissue_code}-{patient}-{sample}
+# --> The 2-letter tissue code IS the cancer type identifier
 
 def extract_cancer_type(barcode):
     """Extract TCGA cancer type from barcode e.g. TCGA-OR-A5J1-01 -> TCGA-ACC"""
-    # MC3 uses TCGA-{2char_tissue}-{patient_id}-{sample}
-    # We'll use a mapping of known 2-char codes
+   
     parts = str(barcode).split("-")
     if len(parts) >= 2:
         return "TCGA-" + parts[1]
@@ -198,7 +197,7 @@ coding = mutations[mutations["Variant_Classification"] != "Silent"].copy()
 idr_muts = coding[coding["in_idr"] == True]
 ord_muts = coding[coding["in_idr"] == False]
 
-print(f"\n=== IDR MUTATION FLAGGING RESULTS ===")
+print(f"\n=== RESULTS ===")
 print(f"Total mutations:           {len(mutations):,}")
 print(f"Coding (non-silent):       {len(coding):,}")
 print(f"In IDR:                    {len(idr_muts):,} ({100*len(idr_muts)/len(coding):.1f}%)")
