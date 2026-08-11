@@ -1,6 +1,5 @@
 import requests
 
-# Get ALL open-access TCGA MAFs, paginating through results
 search_url = "https://api.gdc.cancer.gov/files"
 
 params = {
@@ -16,7 +15,7 @@ hits = r["data"]["hits"]
 
 print(f"Total files found: {len(hits)}\n")
 
-# Get unique projects and one representative file per project
+# Getting unique projects and one representative file per project
 projects = {}
 for h in hits:
     try:
