@@ -5,9 +5,7 @@ import os
 RESULTS_DIR = "results"
 os.makedirs(RESULTS_DIR, exist_ok=True)
 
-# ---------------------------------------------------------------
 # Load expression matrix
-# ---------------------------------------------------------------
 print("Loading expression matrix...")
 expr = pd.read_csv("data/expression/emt_expression_matrix.tsv", sep="\t")
 print(f"Shape: {expr.shape}")
@@ -18,9 +16,7 @@ print(f"Columns (first 10): {list(expr.columns[:10])}")
 # Set sample_id as index
 expr = expr.set_index("sample_id")
 
-# ---------------------------------------------------------------
 # Define gene signatures
-# ---------------------------------------------------------------
 
 # MSigDB Hallmark EMT — mesenchymal genes (high = mesenchymal)
 MESEN_GENES = [
@@ -43,9 +39,7 @@ EPITH_GENES = [
 HYBRID_GENES = ["CD44","EGFR","MET","AXL","CXCR4","ITGB3","ITGB1",
                 "CD24","CTNNB1","MYC"]
 
-# ---------------------------------------------------------------
 # Compute scores
-# ---------------------------------------------------------------
 def mean_signature_score(df, genes, name):
     """
     Simple mean expression score across signature genes.
@@ -73,11 +67,8 @@ expr["emp_score"] = expr["mesen_score"] - expr["epith_score"]
 
 print("Done.")
 
-# ---------------------------------------------------------------
 # Classify tumours into E / Hybrid / M states
-# Using quartile-based thresholds on EMP score
 # Bottom 25% = Epithelial, Top 25% = Mesenchymal, Middle 50% = Hybrid
-# ---------------------------------------------------------------
 q25 = expr["emp_score"].quantile(0.25)
 q75 = expr["emp_score"].quantile(0.75)
 
@@ -102,9 +93,7 @@ print(f"\nEMT state by cancer type:")
 state_by_cancer = expr.groupby("cancer_type")["emt_state"].value_counts().unstack(fill_value=0)
 print(state_by_cancer.to_string())
 
-# ---------------------------------------------------------------
 # Save EMT score matrix
-# ---------------------------------------------------------------
 score_cols = ["cancer_type", "mesen_score", "epith_score", "emp_score", "emt_state"]
 scores_df = expr[score_cols].copy()
 scores_df.index.name = "sample_id"
