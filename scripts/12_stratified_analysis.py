@@ -17,10 +17,7 @@ df = pd.read_csv("results/master_dataset.tsv", sep="\t")
 print(f"Total samples: {len(df):,}")
 print(f"IDR-mutant: {df['has_idr_mutation'].sum()}")
 
-# ---------------------------------------------------------------
-# Stratified analysis: within each cancer type
-# Compare IDR-mutant vs IDR-WT EMP scores
-# ---------------------------------------------------------------
+# Stratified analysis: within each cancer type compare IDR-mutant vs IDR-WT EMP scores
 print("\n=== WITHIN-CANCER-TYPE ANALYSIS ===\n")
 
 results = []
@@ -72,9 +69,7 @@ print(res_df[["cancer_type","n_idr_mut","median_emp_idr_mut",
               "median_emp_idr_wt","delta_emp",
               "mw_pval","mw_fdr"]].to_string(index=False))
 
-# ---------------------------------------------------------------
 # Per-gene analysis: ZEB1 and ZEB2 (most mutations)
-# ---------------------------------------------------------------
 print("\n=== PER-GENE ANALYSIS ===\n")
 
 gene_results = []
@@ -113,9 +108,7 @@ if len(gene_df) > 0:
                    "delta_emp","mw_pval","mw_fdr",
                    "pct_hybrid_mut","pct_hybrid_wt","fisher_pval"]].to_string(index=False))
 
-# ---------------------------------------------------------------
 # Figure 4: Forest plot of delta EMP scores per cancer type
-# ---------------------------------------------------------------
 plot_df = res_df.sort_values("delta_emp").copy()
 colors = ["#E74C3C" if p < 0.05 else "#95A5A6" for p in plot_df["mw_pval"]]
 
@@ -142,9 +135,7 @@ plt.savefig("figures/fig4_forest_delta_emp.png", dpi=150)
 plt.close()
 print("\nSaved: figures/fig4_forest_delta_emp.png")
 
-# ---------------------------------------------------------------
 # Figure 5: ZEB1 IDR-mutant vs WT violin by cancer type
-# ---------------------------------------------------------------
 zeb1_cancers = df[df["idr_mut_ZEB1"]==True]["cancer_type"].value_counts()
 zeb1_cancers = zeb1_cancers[zeb1_cancers >= 3].index.tolist()
 
