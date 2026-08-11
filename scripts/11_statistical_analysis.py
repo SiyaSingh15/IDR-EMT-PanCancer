@@ -12,17 +12,13 @@ RESULTS_DIR = "results"
 FIGURES_DIR = "figures"
 os.makedirs(FIGURES_DIR, exist_ok=True)
 
-# ---------------------------------------------------------------
 # Load master dataset
-# ---------------------------------------------------------------
 df = pd.read_csv("results/master_dataset.tsv", sep="\t")
 print(f"Master dataset: {len(df):,} samples")
 print(f"IDR-mutant samples: {df['has_idr_mutation'].sum()}")
 print(f"Any-EMT-mutant samples: {df['has_any_emt_mutation'].sum()}")
 
-# ---------------------------------------------------------------
 # Figure 1: EMP score distribution across cancer types
-# ---------------------------------------------------------------
 fig, ax = plt.subplots(figsize=(14, 6))
 order = df.groupby("cancer_type")["emp_score"].median().sort_values().index
 sns.boxplot(data=df, x="cancer_type", y="emp_score",
@@ -38,9 +34,7 @@ plt.savefig("figures/fig1_emp_scores_by_cancer.png", dpi=150)
 plt.close()
 print("Saved: figures/fig1_emp_scores_by_cancer.png")
 
-# ---------------------------------------------------------------
 # Figure 2: EMT state distribution per cancer type
-# ---------------------------------------------------------------
 state_counts = df.groupby(["cancer_type","emt_state"]).size().unstack(fill_value=0)
 state_pct = state_counts.div(state_counts.sum(axis=1), axis=0) * 100
 state_pct = state_pct.sort_values("Mesenchymal", ascending=True)
@@ -67,9 +61,7 @@ plt.savefig("figures/fig2_emt_state_composition.png", dpi=150)
 plt.close()
 print("Saved: figures/fig2_emt_state_composition.png")
 
-# ---------------------------------------------------------------
 # Figure 3: EMP score — IDR mutant vs WT (all samples)
-# ---------------------------------------------------------------
 idr_mut  = df[df["has_idr_mutation"] == True]["emp_score"]
 idr_wt   = df[df["has_idr_mutation"] == False]["emp_score"]
 
@@ -94,9 +86,7 @@ plt.savefig("figures/fig3_emp_idr_mut_vs_wt.png", dpi=150)
 plt.close()
 print("Saved: figures/fig3_emp_idr_mut_vs_wt.png")
 
-# ---------------------------------------------------------------
 # Figure 4: Hybrid state enrichment — IDR mutant vs WT
-# ---------------------------------------------------------------
 from scipy.stats import fisher_exact
 
 def hybrid_enrichment(df_sub, label):
@@ -127,9 +117,7 @@ if result:
     print(f"  % Hybrid in IDR-WT:     {result['pct_hybrid_idr_wt']:.1f}%")
     print(f"  Odds ratio: {result['odds_ratio']:.3f}, p={result['p_value']:.4f}")
 
-# ---------------------------------------------------------------
 # Save summary stats
-# ---------------------------------------------------------------
 summary = {
     "total_samples": len(df),
     "idr_mutant_samples": int(df["has_idr_mutation"].sum()),
