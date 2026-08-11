@@ -3,7 +3,7 @@
 A pan-cancer TCGA computational study
 
 [![Python](https://img.shields.io/badge/Python-3.10-blue)](https://python.org)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
 
 ## Overview
 
