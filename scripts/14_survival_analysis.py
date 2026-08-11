@@ -11,9 +11,7 @@ FIGURES_DIR = "figures"
 RESULTS_DIR = "results"
 os.makedirs(FIGURES_DIR, exist_ok=True)
 
-# ---------------------------------------------------------------
 # Build survival dataset
-# ---------------------------------------------------------------
 print("Building survival dataset...")
 
 # Patient clinical — pivot to wide
@@ -45,9 +43,7 @@ surv = pat_wide[
 print(f"Patients with OS data: {len(surv):,}")
 print(f"Events (deaths): {surv['os_event'].sum():,} ({100*surv['os_event'].mean():.1f}%)")
 
-# ---------------------------------------------------------------
 # Load master dataset with IDR mutation flags
-# ---------------------------------------------------------------
 master = pd.read_csv("results/master_dataset.tsv", sep="\t")
 
 # Extract patient ID from sample ID (first 12 chars)
@@ -65,9 +61,7 @@ print(f"\nMerged survival + expression: {len(merged):,} patients")
 print(f"IDR-mutant patients: {merged['has_idr_mutation'].sum()}")
 print(f"Cancer types: {merged['cancer_type'].nunique()}")
 
-# ---------------------------------------------------------------
 # Figure 6: Pan-cancer KM — IDR-mutant vs IDR-WT
-# ---------------------------------------------------------------
 kmf = KaplanMeierFitter()
 fig, ax = plt.subplots(figsize=(8, 5))
 
@@ -102,9 +96,7 @@ plt.savefig("figures/fig6_km_pancancer_idr.png", dpi=150)
 plt.close()
 print("\nSaved: figures/fig6_km_pancancer_idr.png")
 
-# ---------------------------------------------------------------
 # Figure 7: KM by EMT state (pan-cancer)
-# ---------------------------------------------------------------
 fig, ax = plt.subplots(figsize=(8, 5))
 colors = {"Epithelial":"#3498DB","Hybrid":"#F39C12","Mesenchymal":"#E74C3C"}
 lr_results = {}
@@ -124,9 +116,7 @@ plt.savefig("figures/fig7_km_emt_state.png", dpi=150)
 plt.close()
 print("Saved: figures/fig7_km_emt_state.png")
 
-# ---------------------------------------------------------------
-# Cox PH model — pan-cancer
-# ---------------------------------------------------------------
+# Cox PH model: pan-cancer
 print("\n=== COX PROPORTIONAL HAZARDS MODEL ===\n")
 
 cox_data = merged[
@@ -141,7 +131,7 @@ cox_data["emt_hybrid"]      = (cox_data["emt_state"] == "Hybrid").astype(int)
 cox_data["idr_mut"]         = cox_data["has_idr_mutation"].astype(int)
 cox_data["age_scaled"]      = (cox_data["age"] - cox_data["age"].mean()) / cox_data["age"].std()
 
-# Add cancer type dummies (use BRCA as reference — largest group)
+# Add cancer type dummies (use BRCA as reference - largest group)
 top_cancers = cox_data["cancer_type"].value_counts().head(8).index.tolist()
 for ct in top_cancers[1:]:  # skip first as reference
     cox_data[f"ct_{ct}"] = (cox_data["cancer_type"] == ct).astype(int)
@@ -182,9 +172,7 @@ try:
 except Exception as e:
     print(f"Cox model error: {e}")
 
-# ---------------------------------------------------------------
 # Per-cancer KM for top hits: UCEC, LUAD, SKCM
-# ---------------------------------------------------------------
 print("\nGenerating per-cancer KM plots...")
 
 fig, axes = plt.subplots(1, 3, figsize=(15, 5))
