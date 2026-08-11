@@ -65,9 +65,7 @@ def fetch_gene(profile_id, study_id, entrez_id, gene_symbol):
         pass
     return []
 
-# ---------------------------------------------------------------
 # Fetch all genes for all studies
-# ---------------------------------------------------------------
 print(f"Fetching {len(EMT_GENES)} genes x {len(STUDY_PROFILES)} studies...\n")
 
 all_rows = []
